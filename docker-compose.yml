@@ -1,0 +1,11 @@
+version: "3.8"
+
+services:
+  bot:
+    build:
+      context: ./bot
+      dockerfile: Dockerfile.dev
+    volumes:
+      - ./bot:/app/bot
+    environment:
+      - NODE_ENV=development

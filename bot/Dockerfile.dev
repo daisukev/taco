@@ -1,0 +1,12 @@
+FROM alpine:3 AS development
+WORKDIR /app/bot
+
+COPY package*.json ./
+
+RUN apk --no-cache add "nodejs~=18" "npm~=9" \
+  && npm install -g nodemon@3.0.1 \
+  && npm install
+
+COPY . .
+
+CMD ["nodemon", "src/index.js"]
