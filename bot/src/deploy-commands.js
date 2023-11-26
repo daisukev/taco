@@ -7,6 +7,7 @@ import { REST, Routes } from "discord.js";
 const token = process.env.DISCORD_TOKEN;
 const clientId = process.env.CLIENT_ID;
 const guildId = process.env.GUILD_ID;
+
 const commands = [];
 
 const __filename = fileURLToPath(import.meta.url);
@@ -23,7 +24,6 @@ for (const folder of commandFolders) {
     const filePath = path.join(commandsPath, file);
     const commandModule = await import(filePath);
     const command = commandModule.default || commandModule;
-    console.log(command);
     if ("data" in command && "execute" in command) {
       commands.push(command.data.toJSON());
     } else {
@@ -41,9 +41,12 @@ const rest = new REST().setToken(token);
     console.log(
       `Started refreshing ${commands.length} application (/) commands.`,
     );
+    console.log(commands);
     const data = await rest.put(
       Routes.applicationGuildCommands(clientId, guildId),
-      { body: commands },
+      {
+        body: commands,
+      },
     );
     console.log("Successfully reloaded application (/) commands.");
   } catch (error) {
